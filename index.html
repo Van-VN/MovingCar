@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<canvas id="drawCanvas" style="border: 1px solid red"></canvas>
+</body>
+</html>
+<script>
+
+
+
+    let canvas = document.getElementById('drawCanvas')
+    let c = canvas.getContext("2d");
+    canvas.width = 1024;
+    canvas.height = 576;
+    // c.fillStyle = 'black';
+    // c.fillRect(0, 0, canvas.width, canvas.height);
+
+    class Car {
+        x;
+        y;
+        width;
+        height;
+        velocityx;
+        velocityy;
+        color;
+
+        constructor(x, y, width, height, velox, veloy, color) {
+            this.x = x;
+            this.y = y;
+            this.width = width;
+            this.height = height;
+            this.velocityx = velox;
+            this.velocityy = veloy;
+            this.color = color;
+        }
+
+        carDraw() {
+            let img = new Image();
+            img.src = "orgCar.png";
+            // c.fillStyle = this.color;
+            // img.onload = function () {
+            c.drawImage(img, this.x, this.y);
+            // }
+            // c.fillRect(this.x, this.y, this.width, this.height);
+        }
+    }
+
+    function carRender() {
+        let logicCheck = false;
+        c.fillStyle = "white";
+        c.fillRect(0, 0, canvas.width, canvas.height);
+        c.fillStyle = 'black';
+        c.fillRect(0,0, 500, 50);
+        c.fillStyle = 'red';
+        c.fillRect(500,200, 300, 50);
+        yellowCar.carDraw();
+        window.requestAnimationFrame(carRender);
+        if (yellowCar.x + yellowCar.width > 500 && yellowCar.x < 800 && yellowCar.y + yellowCar.height > 200 && yellowCar.y < 250) {
+            logicCheck = true;
+            // console.log('Thua cuộc!');
+        } else if (yellowCar.x > 0 && yellowCar.x + yellowCar.width < 500 && yellowCar.y > 0 && yellowCar.y < 50) {
+            logicCheck = true;
+        }
+        if (logicCheck) {
+            alert('Lose!');
+            setTimeout(function(){ window. location. reload(); }, 0);
+        }
+    }
+
+    let yellowCar = new Car(canvas.width / 2, canvas.height - 120, 50, 100, 0, 0, 'yellow');
+    yellowCar.carDraw();
+    window.addEventListener('keydown', (event) => {
+        // console.log(event.key);
+        switch (event.key) {
+            case "a":
+                yellowCar.x -= 10;
+                // console.log(yellowCar.velocityx);
+                break;
+            case "d":
+                yellowCar.x += 10;
+                break;
+            case "w":
+                yellowCar.y -= 10;
+                break;
+            case "s":
+                yellowCar.y += 10;
+                break;
+        }
+    })
+
+
+
+    window.addEventListener('keyup', (event) => {
+        // console.log(event.key);
+        switch (event) {
+            case "a":
+                yellowCar.x -= 0;
+                break;
+            case "d":
+                yellowCar.x += 0;
+                break;
+            case "w":
+                yellowCar.y -= 0;
+                break;
+            case "s":
+                yellowCar.y += 0;
+                break;
+        }
+    })
+
+    carRender();
+</script>
