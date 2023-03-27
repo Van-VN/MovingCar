@@ -6,9 +6,19 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <style>
+    body {
+        font-family: Arial,sans-serif;
+        font-size: 22px;
+        font-weight: bold;
+    }
+    </style>
 </head>
 <body>
 <canvas id="drawCanvas" style="border: 1px solid red"></canvas>
+<br>
+<p style="display: inline-block">Speed (Ctrl để tăng, Shift để giảm tốc): </p>
+<p style="display: inline-block; font-size: 26px; color: red" id="speedResult"></p>
 </body>
 </html>
 <script>
@@ -31,24 +41,19 @@
         velocityy;
         color;
 
-        constructor(x, y, width, height, velox, veloy, color) {
+        constructor(x, y, width, height, speed, color) {
             this.x = x;
             this.y = y;
             this.width = width;
             this.height = height;
-            this.velocityx = velox;
-            this.velocityy = veloy;
+            this.speed = speed;
             this.color = color;
         }
 
         carDraw() {
             let img = new Image();
             img.src = "orgCar.png";
-            // c.fillStyle = this.color;
-            // img.onload = function () {
             c.drawImage(img, this.x, this.y);
-            // }
-            // c.fillRect(this.x, this.y, this.width, this.height);
         }
     }
 
@@ -64,7 +69,6 @@
         window.requestAnimationFrame(carRender);
         if (yellowCar.x + yellowCar.width > 500 && yellowCar.x < 800 && yellowCar.y + yellowCar.height > 200 && yellowCar.y < 250) {
             logicCheck = true;
-            // console.log('Thua cuộc!');
         } else if (yellowCar.x > 0 && yellowCar.x + yellowCar.width < 500 && yellowCar.y > 0 && yellowCar.y < 50) {
             logicCheck = true;
         }
@@ -72,25 +76,33 @@
             alert('Lose!');
             setTimeout(function(){ window. location. reload(); }, 0);
         }
+        document.getElementById('speedResult').innerHTML = yellowCar.speed;
     }
 
-    let yellowCar = new Car(canvas.width / 2, canvas.height - 120, 50, 100, 0, 0, 'yellow');
+    let yellowCar = new Car(canvas.width / 2, canvas.height - 120, 50, 100, 10, 'yellow');
     yellowCar.carDraw();
     window.addEventListener('keydown', (event) => {
-        // console.log(event.key);
+        console.log(event.key);
         switch (event.key) {
             case "a":
-                yellowCar.x -= 10;
-                // console.log(yellowCar.velocityx);
+                yellowCar.x -= yellowCar.speed;
                 break;
             case "d":
-                yellowCar.x += 10;
+                yellowCar.x += yellowCar.speed;
                 break;
             case "w":
-                yellowCar.y -= 10;
+                yellowCar.y -= yellowCar.speed;
                 break;
             case "s":
-                yellowCar.y += 10;
+                yellowCar.y += yellowCar.speed;
+                break;
+            case "Control":
+                yellowCar.speed++;
+                console.log(yellowCar.speed);
+                break;
+            case "Shift":
+                yellowCar.speed--;
+                console.log(yellowCar.speed);
                 break;
         }
     })
